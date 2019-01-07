@@ -1,0 +1,15 @@
+target
+.idea
+target
+extidm*
+extidm.iml
+!**/java/it/**
+logs/**
+.swagger-codegen
+!**/java/it/**
+.project
+.classpath
+.settings/**
+/.settings/org.eclipse.jdt.core.prefs
+/.factorypath
+generated.iml
