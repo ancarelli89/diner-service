@@ -1,5 +1,5 @@
 build:
-    box: python:2.7
+    box: openjdk
     steps:
 
     # Check that our application's tests are passing. Since this is a python
@@ -12,7 +12,7 @@ build:
         # Take our tested application revision and its dependencies, bake it in to a
     # Docker image, and push to OCIR.
     - internal/docker-push:
-            entrypoint: bin/get_ip
+            entrypoint: java -jar /diner-service.jar --server.port=8080
             cmd: 0.0.0.0 8080
             working-dir: $WERCKER_ROOT
             tag: $WERCKER_GIT_COMMIT
@@ -20,10 +20,10 @@ build:
             username: $DOCKER_USERNAME
             password: $DOCKER_PASSWORD
             repository: $DOCKER_REPO
-            registry: https://iad.ocir.io/v2
+            #registry: https://iad.ocir.io/v2
 
 deploy-to-kubernetes:
-    box: python:2.7
+    box: openjdk
     steps:
 
     # https://github.com/wercker/step-bash-template
@@ -46,20 +46,3 @@ deploy-to-kubernetes:
         token: $OKE_TOKEN
         insecure-skip-tls-verify: true
         command: apply -f $WERCKER_OUTPUT_DIR/kubernetes/
-
-    # Tell Kubernetes that we're going to wait 60 seconds for the deploy to be successful
-    - kubectl:
-        name: set deployment timeout
-        server: $OKE_MASTER
-        token: $OKE_TOKEN
-        insecure-skip-tls-verify: true
-        command: patch deployment/get-ip -p '{"spec":{"progressDeadlineSeconds":60}}'
-
-    # Watch the Kubernetes deployment. Once the pods are considered healthy the step will exit 0
-    # If they aren't healthy within 60 seconds, it will exit with a non 0 exit code, and cause the run to fail.
-    - kubectl:
-        name: check deployment status
-        server: $OKE_MASTER
-        token: $OKE_TOKEN
-        insecure-skip-tls-verify: true
-        command: rollout status deployment/get-ip
