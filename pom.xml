@@ -26,7 +26,6 @@
             <artifactId>spring-boot-starter-jetty</artifactId>
         </dependency>
 </dependencies>
-
 <build>
         <plugins>
             <plugin>
