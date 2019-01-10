@@ -20,10 +20,10 @@ spec:
         commit: ${WERCKER_GIT_COMMIT}
     spec:
       containers:
-      - name: diner-service-server
+      - name: ds-server
         image: ${DOCKER_REPO}:${WERCKER_GIT_COMMIT}
         ports:
-        - name: diner-service-server
+        - name: ds-server
           containerPort: 8080
           protocol: TCP
       imagePullSecrets:
