@@ -6,7 +6,7 @@ build:
         # Take our tested application revision and its dependencies, bake it in to a
     # Docker image, and push to OCIR.
     - internal/docker-push:
-            entrypoint: java -jar /diner-service.jar --server.port=8080
+            entrypoint: jafva -jar /diner-service.jar
             cmd: 0.0.0.0 8080
             working-dir: $WERCKER_ROOT
             tag: $WERCKER_GIT_COMMIT
@@ -40,3 +40,20 @@ deploy-to-kubernetes:
         token: $OKE_TOKEN
         insecure-skip-tls-verify: true
         command: apply -f $WERCKER_OUTPUT_DIR/kubernetes/
+        
+        # Tell Kubernetes that we're going to wait 60 seconds for the deploy to be successful
+    - kubectl:
+        name: set deployment timeout
+        server: $OKE_MASTER
+        token: $OKE_TOKEN
+        insecure-skip-tls-verify: true
+        command: patch deployment/diner-service -p '{"spec":{"progressDeadlineSeconds":60}}'
+
+    # Watch the Kubernetes deployment. Once the pods are considered healthy the step will exit 0
+    # If they aren't healthy within 60 seconds, it will exit with a non 0 exit code, and cause the run to fail.
+    - kubectl:
+        name: check deployment status
+        server: $OKE_MASTER
+        token: $OKE_TOKEN
+        insecure-skip-tls-verify: true
+        command: rollout status deployment/diner-service
