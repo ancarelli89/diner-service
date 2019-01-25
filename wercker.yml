@@ -1,20 +1,22 @@
+box: combient/java-mvn
 build:
-    box: openjdk
-    steps:
+  steps:
+    # Build Spring Boot Sample application
+    - script:
+        name: Maven install
+        code: mvn install
 
-
-        # Take our tested application revision and its dependencies, bake it in to a
-    # Docker image, and push to OCIR.
+push:
+  steps:
+    # Push to public docker repo
     - internal/docker-push:
-            entrypoint: jafva -jar /diner-service.jar
-            cmd: 0.0.0.0 8080
-            working-dir: $WERCKER_ROOT
-            tag: $WERCKER_GIT_COMMIT
-            ports: "8080"
-            username: $DOCKER_USERNAME
-            password: $DOCKER_PASSWORD
-            repository: $DOCKER_REPO
-            #registry: https://iad.ocir.io/v2
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        tag: latest
+        repository: $DOCKER_REPO
+        registry: https://index.docker.io/v1/
+        cmd: java -jar  /pipeline/source/target/diner-service.jar
+
 
 deploy-to-kubernetes:
     box: openjdk
