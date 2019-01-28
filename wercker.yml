@@ -15,7 +15,7 @@ push:
         tag: latest
         repository: $DOCKER_REPO
         registry: https://index.docker.io/v1/
-        cmd: java -jar  /pipeline/source/target/diner-service.jar
+        cmd: java -jar  /pipeline/source/target/diner-service-0.0.1-SNAPSHOT.jar
 
 
 deploy-to-kubernetes:
