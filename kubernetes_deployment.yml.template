@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: ds-server
-        image: ${DOCKER_REPO}:${WERCKER_GIT_COMMIT}
+        image: ${DOCKER_REPO}:latest
         ports:
         - name: ds-server
           containerPort: 8080
