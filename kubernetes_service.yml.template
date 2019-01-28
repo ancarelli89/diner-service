@@ -11,8 +11,8 @@ metadata:
     commit: ${WERCKER_GIT_COMMIT}
 spec:
   ports:
-  - port: 80
-    targetPort: 8080
+  - port: 8090
+    targetPort: 8090
   selector:
     app: diner-service
     commit: ${WERCKER_GIT_COMMIT}

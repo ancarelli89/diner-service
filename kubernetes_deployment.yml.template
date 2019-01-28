@@ -24,7 +24,7 @@ spec:
         image: ${DOCKER_REPO}:latest
         ports:
         - name: ds-server
-          containerPort: 8080
+          containerPort: 8090
           protocol: TCP
       imagePullSecrets:
       - name:  ${OKE_IMAGESECRET}
