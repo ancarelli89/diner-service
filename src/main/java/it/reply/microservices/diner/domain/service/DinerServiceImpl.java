@@ -40,27 +40,31 @@ public class DinerServiceImpl extends BaseService<Diner, String>
     }
 
 
-    //@Override
+    @Override
     public Collection<Diner> findByName(String name) throws Exception {
         return dinerRepository.findByName(name);
     }
+    
+    public Collection<Diner> findAll() throws Exception {
+        return dinerRepository.findAll();
+    }
 
-    //@Override
+    @Override
     public void update(Diner diner) throws Exception {
     	dinerRepository.update(diner);
     }
 
-    //@Override
+    @Override
     public void delete(String id) throws Exception {
     	dinerRepository.remove(id);
     }
 
-    //@Override
+    @Override
     public Entity<String> findById(String dinerId) throws Exception {
         return dinerRepository.get(dinerId);
     }
 
-    //@Override
+    @Override
     public Collection<Diner> findByCriteria(Map<String, ArrayList<String>> name) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

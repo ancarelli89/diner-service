@@ -25,7 +25,7 @@ public class InMemDinerRepository implements DinerRepository<Diner, String> {
         entities.put("2", diner);
     }
 
-    //@Override
+    @Override
     public boolean containsName(String name) {
         try {
             return this.findByName(name).size() > 0;
@@ -36,13 +36,13 @@ public class InMemDinerRepository implements DinerRepository<Diner, String> {
     }
 
 
-    //@Override
+    @Override
     public void add(Diner entity) {
         entities.put(entity.getId(), entity);
     }
 
 
-    //@Override
+    @Override
     public void remove(String id) {
         if (entities.containsKey(id)) {
             entities.remove(id);
@@ -50,7 +50,7 @@ public class InMemDinerRepository implements DinerRepository<Diner, String> {
     }
 
 
-    //@Override
+    @Override
     public void update(Diner entity) {
         if (entities.containsKey(entity.getId())) {
             entities.put(entity.getId(), entity);
@@ -58,25 +58,25 @@ public class InMemDinerRepository implements DinerRepository<Diner, String> {
     }
 
 
-    //@Override
+    @Override
     public boolean contains(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 
-    //@Override
+    @Override
     public Entity<String> get(String id) {
         return entities.get(id);
     }
 
 
-    //@Override
+    @Override
     public Collection<Diner> getAll() {
         return entities.values();
     }
 
 
-    //@Override
+    @Override
     public Collection<Diner> findByName(String name) throws Exception {
         Collection<Diner> diners = new ArrayList<Diner>();
         int noOfChars = name.length();
@@ -86,6 +86,17 @@ public class InMemDinerRepository implements DinerRepository<Diner, String> {
         	 if (diner.getName().toLowerCase().contains(name.subSequence(0, noOfChars))) {
              	diners.add(diner);
              }
+        }
+        return diners;
+    }
+    
+   @Override
+    public Collection<Diner> findAll() throws Exception {
+        Collection<Diner> diners = new ArrayList<Diner>();
+        Iterator<Diner> it = entities.values().iterator();
+        while(it.hasNext()) {
+        	Diner diner = it.next();
+            diners.add(diner);
         }
         return diners;
     }

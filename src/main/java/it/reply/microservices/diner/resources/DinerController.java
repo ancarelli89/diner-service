@@ -35,13 +35,27 @@ public class DinerController {
         this.dinerService = dinerService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    /*@RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Collection<Diner>> findByName(@RequestParam("name") String name) {
         logger.info(String.format("diner-service findByName() invoked:{} for {} ", dinerService.getClass().getName(), name));
         name = name.trim().toLowerCase();
         Collection<Diner> diners;
         try {
         	diners = dinerService.findByName(name);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Exception raised findByName REST Call {0}", ex);
+            return new ResponseEntity<Collection<Diner>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return diners.size() > 0 ? new ResponseEntity<Collection<Diner>>(diners, HttpStatus.OK)
+                : new ResponseEntity<Collection<Diner>>(HttpStatus.NO_CONTENT);
+    }*/
+    
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<Collection<Diner>> findAll() {
+        logger.info(String.format("diner-service findAll() invoked:{} ", dinerService.getClass().getName()));
+        Collection<Diner> diners;
+        try {
+        	diners = dinerService.findAll();
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Exception raised findByName REST Call {0}", ex);
             return new ResponseEntity<Collection<Diner>>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -63,6 +77,19 @@ public class DinerController {
         }
         return diner != null ? new ResponseEntity<Entity<String>>(diner, HttpStatus.OK)
                 : new ResponseEntity<Entity<String>>(HttpStatus.NO_CONTENT);
+    }
+    
+    @RequestMapping(value = "/{diner_id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Entity<String>> delete(@PathVariable("diner_id") String id) {
+        logger.info(String.format("diner-service delete() invoked:{} for {} ", dinerService.getClass().getName(), id));
+        id = id.trim();
+        try {
+        	dinerService.delete(id);
+        } catch (Exception ex) {
+            logger.log(Level.WARNING, "Exception raised delete REST Call {0}", ex);
+            return new ResponseEntity<Entity<String>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<Entity<String>>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(method = RequestMethod.POST)

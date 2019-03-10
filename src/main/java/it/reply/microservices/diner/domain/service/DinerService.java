@@ -18,6 +18,8 @@ public interface DinerService {
     public Entity<String> findById(String dinerId) throws Exception;
 
     public Collection<Diner> findByName(String name) throws Exception;
+    
+    public Collection<Diner> findAll() throws Exception;
 
     public Collection<Diner> findByCriteria(Map<String, ArrayList<String>> name) throws Exception;
 }
